@@ -1,19 +1,13 @@
-import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import { useVuelidate } from "@vuelidate/core";
 import swal from "sweetalert2";
-import { usePostStore } from "./PostStore";
-import {
-  required,
-  maxLength,
-  minLength,
-  alpha,
-  integer,
-} from "@vuelidate/validators";
+import FormPostData from "../components/Form/FormPostData.vue";
+import axios from "axios";
+import { required, maxLength, minLength, integer } from "@vuelidate/validators";
 export const useFormStore = defineStore("formStore", {
   state: () => ({
-    postStore: usePostStore(),
-    errMessage: "",
+    posts: [],
+    activeTab: FormPostData,
+    active: [true, false],
     v$: "",
     formData: {
       id: "",
@@ -48,17 +42,39 @@ export const useFormStore = defineStore("formStore", {
       if (this.v$.$error) {
         swal.fire("Oops", "Please Enter Data properly", "error");
       } else {
-        this.postStore.postData();
-
-        /*  swal
-          .fire("Success", "Data Saved Successfully", "success")
-          .then((result) => {
-            if (result.value) {
-
-              window.location.reload();
-            }
-          }); */
+        axios
+          .post("https://jsonplaceholder.typicode.com/posts", this.formData)
+          .then((Response) => {
+            console.log(Response);
+            swal
+              .fire("success", "Data submitted successfully!!!", "success")
+              .then((result) => {
+                if (result.value) {
+                  window.location.reload();
+                }
+              });
+          })
+          .catch((error) => swal.fire("Error", error, "Error"));
       }
+    },
+
+    getData() {
+      axios
+        .get("https://jsonplaceholder.typicode.com/posts")
+        .then((Response) => {
+          console.log(Response.data);
+          this.posts = Response.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    deleteData(id) {
+      axios
+        .delete("https://jsonplaceholder.typicode.com/posts/" + id)
+        .then(() => {
+          const index = this.posts.findIndex((post) => post.id === id);
+          if (index > -1) this.posts.splice(index, 1);
+          swal.fire("success", "Deleted SuccessFully!!", "success");
+        });
     },
   },
 });

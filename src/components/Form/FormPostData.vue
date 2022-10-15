@@ -1,12 +1,13 @@
 <script setup>
-import BaseInput from "./base/BaseInput.vue";
-import BaseLabel from "./base/BaseLabel.vue";
-import BaseRadio from "./base/BaseRadio.vue";
-import BaseButton from "./base/BaseButton.vue";
-import { useFormStore } from "../stores/FormStore";
-import BaseErrorMessage from "./base/BaseErrorMessage.vue";
+import BaseInput from "../base/BaseInput.vue";
+import BaseLabel from "../base/BaseLabel.vue";
+
+import BaseButton from "../base/BaseButton.vue";
+import { useFormStore } from "../../stores/FormStore";
+import BaseErrorMessage from "../base/BaseErrorMessage.vue";
 let formStore = useFormStore();
 console.log("Vuevalidate", formStore.v$);
+("FormPostData");
 </script>
 <template>
   <form class="grid w-full place-items-center" style="height: 85vh">

@@ -13,6 +13,8 @@ defineProps({
       ' bg-sky-100 text-sky-500 hover:bg-sky-200':
         type === 'HeaderTab' && !active,
       'bg-sky-900 text-sky-100 hover:bg-sky-700 text-xl': type === 'submit',
+      'bg-amber-100 text-sky-500 hover:bg-amber-200 text-xl rounded-2xl w-10/12':
+        type === 'primary',
     }"
   >
     <slot></slot>
